@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/helpers/cache_helper.dart';
 import 'package:social_app/models/user_model.dart';
 import 'package:social_app/shared/components.dart';
 import '../../../shared/colors.dart';
@@ -28,6 +29,8 @@ class RegisterCubit extends LoginCubit {
           //TODO fix_error of showToast
           showToast(
               message: MyStrings.signInSuccessMessage, color: MyColors.greenAlert);
+          CacheHelper.setData(key: MyStrings.uId, value: value.user!.uid);
+
           emit(RegisterSuccessState());
     }).catchError((error) {
       showToast(message: error.toString());
@@ -42,7 +45,7 @@ class RegisterCubit extends LoginCubit {
       required String uId}) {
     emit(RegisterCreateUserLoadingState());
     UserModel model =
-        UserModel(name: name, email: email, phone: phone, uId: uId);
+        UserModel(name: name, email: email, phone: phone, uId: uId, isEmailVerified: false);
     FirebaseFirestore.instance
         .collection(MyStrings.collectionName)
         .doc(uId)

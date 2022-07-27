@@ -1,20 +1,25 @@
+import 'package:social_app/shared/strings.dart';
+
 class UserModel {
   late String name;
   late String email;
   late String phone;
   late String uId;
+  late bool isEmailVerified;
 
   UserModel(
       {required this.name,
       required this.email,
       required this.phone,
-      required this.uId});
+      required this.uId,
+      required this.isEmailVerified});
 
-  UserModel.fromJson(Map<String, dynamic> json){
-    name = json['name'];
+  UserModel.fromJson(Map<String, dynamic>? json){
+    name = json!['name'];
     email = json['email'];
     phone = json['phone'];
     uId = json['uId'];
+    isEmailVerified = json[MyStrings.isEmailVerified];
   }
 
   Map<String,dynamic> toMap(){
@@ -22,7 +27,8 @@ class UserModel {
       'name': name,
       'email': email,
       'phone': phone,
-      'uId': uId
+      'uId': uId,
+      MyStrings.isEmailVerified: isEmailVerified
     };
   }
 }

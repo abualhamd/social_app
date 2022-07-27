@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../shared/themes_and_decorations.dart';
+import '../layout_module/social_layout.dart';
 import '../login_module/cubit/login_states.dart';
 import '../login_module/cubit/login_cubit.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-
 import '../register_module/register_screen.dart';
-// import '../../helpers/cache_helper.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -18,22 +17,9 @@ class LoginScreen extends StatelessWidget {
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
-          // if (state is LoginSuccessState) {
-          //   if (state.loginModel.status) {
-          //     CacheHelper.setToken(value: state.loginModel.data!.token).then(
-          //       (value) {
-          //         Navigator.pushReplacement(
-          //           context,
-          //           MaterialPageRoute(
-          //             builder: (context) => ShopLayout(),
-          //           ),
-          //         );
-          //       },
-          //     );
-          //   } else {
-          //     showToast(message: state.loginModel.message);
-          //   }
-          // }
+          if(state is LoginSuccessState) {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SocialLayout()));
+          }
         },
         builder: (context, state) {
           LoginCubit cubit = LoginCubit.get(context);

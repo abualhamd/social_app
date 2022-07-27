@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:social_app/helpers/cache_helper.dart';
 import 'package:social_app/shared/components.dart';
+import 'package:social_app/shared/strings.dart';
 import '../cubit/login_states.dart';
 
 class LoginCubit extends Cubit<LoginState> {
@@ -35,11 +37,12 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void userLogin() {
-    emit(LoginInitState());
+    emit(LoginLoadingState());
 
     FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text, password: passwordController.text).then((value) {
-          print(value.user!.uid);
+          CacheHelper.setData(key: MyStrings.uId, value: value.user!.uid);
+
           emit(LoginSuccessState());
     }).catchError((error){
 
