@@ -42,7 +42,7 @@ final ThemeData themeLight = ThemeData(
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
-    selectedItemColor: Colors.blue,
+    selectedItemColor: MyColors.defaultColor,
     elevation: 20.0,
   ),
 );
