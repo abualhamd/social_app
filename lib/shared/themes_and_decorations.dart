@@ -14,8 +14,6 @@ final InputDecoration decorationFormField = InputDecoration(
 );
 
 final ThemeData themeLight = ThemeData(
-  // fontFamily: 'smooch',
-  // primarySwatch: kOrangeMaterialColor,
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
       textStyle: MaterialStateProperty.all<TextStyle>(

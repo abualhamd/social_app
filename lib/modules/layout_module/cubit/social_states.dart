@@ -11,3 +11,11 @@ class SocialUserDataErrorState extends SocialState{}
 class SocialUserDataSuccessState extends SocialState{}
 
 class SocialToggleBottomNavIndex extends SocialState{}
+
+class SocialAddPostState extends SocialState{}
+
+abstract class SocialUpdatingState extends SocialState{}
+
+class SocialUpdatingProfileImageState extends SocialUpdatingState{}
+class SocialProfileImageUpdateSuccess extends SocialState{}
+class SocialProfileImageUpdateError extends SocialState{}

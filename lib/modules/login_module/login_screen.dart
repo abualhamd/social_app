@@ -96,10 +96,6 @@ class LoginScreen extends StatelessWidget {
                                       }
                                     },
                                     child: const Text('Sing In'),
-                                    // style: ButtonStyle(
-                                    //   backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                                    //   // shape:
-                                    // ),
                                   ),
                                   fallback: (context) => const Center(
                                       child: CircularProgressIndicator()),

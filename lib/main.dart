@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/firebase_options.dart';
 import 'package:social_app/helpers/cache_helper.dart';
+import 'package:social_app/modules/layout_module/cubit/social_states.dart';
 import 'package:social_app/modules/layout_module/social_layout.dart';
 import 'package:social_app/modules/login_module/login_screen.dart';
 import 'package:social_app/shared/strings.dart';
 import 'package:social_app/shared/themes_and_decorations.dart';
 import 'bloc_observer.dart';
 import 'modules/layout_module/cubit/social_cubit.dart';
+import 'shared/constants.dart';
 
 void main() {
   BlocOverrides.runZoned(
@@ -18,7 +20,7 @@ void main() {
           options: DefaultFirebaseOptions.currentPlatform);
       await CacheHelper.init();
 
-      //TODO final String uId = CacheHelper.getData(key: MyStrings.uId);
+      MyConstants.uId = CacheHelper.getData(key: MyStrings.uId);
 
       runApp(MyApp());
     },
@@ -33,11 +35,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
     create: (context) => SocialCubit()..getUserData(),
-      child: MaterialApp(
-        theme: themeLight,
-        home: (CacheHelper.getData(key: MyStrings.uId) != null)
-             ? SocialLayout()
-             : LoginScreen(),
+      child: BlocConsumer<SocialCubit, SocialState>(
+        listener: (context, state){},
+        builder: (context, state) {
+          return MaterialApp(
+            theme: themeLight,
+            home: (MyConstants.uId != null)
+                 ? SocialLayout()
+                 : LoginScreen(),
+          );
+        }
       ),
     );
   }

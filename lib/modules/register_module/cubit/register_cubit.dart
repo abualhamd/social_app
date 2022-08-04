@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_app/helpers/cache_helper.dart';
 import 'package:social_app/models/user_model.dart';
 import 'package:social_app/shared/components.dart';
 import '../../../shared/colors.dart';
@@ -29,7 +28,7 @@ class RegisterCubit extends LoginCubit {
           //TODO fix_error of showToast
           showToast(
               message: MyStrings.signInSuccessMessage, color: MyColors.greenAlert);
-          CacheHelper.setData(key: MyStrings.uId, value: value.user!.uid);
+          //TODO CacheHelper.setData(key: MyStrings.uId, value: value.user!.uid);
 
           emit(RegisterSuccessState());
     }).catchError((error) {

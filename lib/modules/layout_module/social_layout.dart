@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/modules/add_post/add_post_screen.dart';
 import 'package:social_app/modules/layout_module/cubit/social_cubit.dart';
 import 'package:social_app/modules/layout_module/cubit/social_states.dart';
 import 'package:social_app/shared/components.dart';
@@ -12,15 +12,20 @@ class SocialLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //TODO experiment with removing the BlocConsumer from her
     return BlocConsumer<SocialCubit, SocialState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is SocialAddPostState) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AddPostScreen()));
+        }
+      },
       builder: (context, state) {
         SocialCubit cubit = SocialCubit.get(context);
 
         return BuildLayout(
           condition: (cubit.userModel != null),
-          widget:
-          (!FirebaseAuth.instance.currentUser!.emailVerified)
+          widget: (!FirebaseAuth.instance.currentUser!.emailVerified)
               ? Container(
                   color: Colors.amber.withOpacity(.7),
                   padding: const EdgeInsets.symmetric(horizontal: 10),
