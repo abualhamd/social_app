@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_app/modules/add_post/add_post_screen.dart';
 import 'package:social_app/modules/layout_module/cubit/social_cubit.dart';
 import 'package:social_app/modules/layout_module/cubit/social_states.dart';
 import 'package:social_app/shared/components.dart';
 import 'package:social_app/shared/strings.dart';
+
+import 'add_post/add_post_screen.dart';
 
 class SocialLayout extends StatelessWidget {
   const SocialLayout({Key? key}) : super(key: key);

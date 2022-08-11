@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:social_app/modules/layout_module/add_post/add_post_screen.dart';
 import 'package:social_app/modules/layout_module/cubit/social_states.dart';
 import 'package:social_app/modules/layout_module/users_screen.dart';
 import 'package:social_app/shared/components.dart';
@@ -11,7 +12,7 @@ import '../../../models/user_model.dart';
 import '../../../shared/constants.dart';
 import '../../../shared/strings.dart';
 import 'package:flutter/material.dart';
-import '../../add_post/add_post_screen.dart';
+// import '../add_post_screen.dart';
 import '../chats_screen.dart';
 import '../home_screen.dart';
 
@@ -70,7 +71,7 @@ class SocialCubit extends Cubit<SocialState> {
   List<String> titles = [
     'News Feed',
     'Chats',
-    'Add Post',
+    'Create Post',
     'Users',
   ];
 
@@ -111,4 +112,57 @@ class SocialCubit extends Cubit<SocialState> {
       emit(SocialProfileImageUpdateError());
     });
   }
+
+  void updateCoverImage() {
+    ImagePicker().pickImage(source: ImageSource.gallery).then((value) {
+      emit(SocialUpdatingCoverImageState());
+
+      FirebaseStorage.instance
+          .ref()
+          .child('users/${Uri.file(value!.path).pathSegments.last}')
+          .putFile(File(value.path))
+          .then((p) {
+        p.ref.getDownloadURL().then((value) {
+          FirebaseFirestore.instance
+              .collection(MyStrings.collectionName)
+              .doc(userModel!.uId)
+              .update({
+            'coverImage': value,
+          }).then((value) {
+            getUserData();
+          });
+        });
+        emit(SocialCoverImageUpdateSuccess());
+      });
+    }).catchError((error) {
+      showToast(message: error.toString());
+
+      emit(SocialCoverImageUpdateError());
+    });
+  }
+
+  File? postImage;
+  void getPostImage(){
+    emit(SocialPostImageGetState());
+
+    ImagePicker().pickImage(source: ImageSource.gallery).then((value) {
+      // Uri.file(value!.path).pathSegments.last;
+      postImage = File(value!.path);
+
+      emit(SocialPostImageSuccessState());
+    }).catchError((error){
+
+      emit(SocialPostImageErrorState());
+    });
+  }
+
+  void createPost(){
+    emit(SocialPostLoadingState());
+
+
+
+
+  }
+
+
 }

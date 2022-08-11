@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
         listener: (context, state){},
         builder: (context, state) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             theme: themeLight,
             home: (MyConstants.uId != null)
                  ? SocialLayout()
