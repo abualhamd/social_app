@@ -1,4 +1,6 @@
-abstract class PostState{}
+import 'package:social_app/modules/layout_module/cubit/social_states.dart';
+
+abstract class PostState extends SocialState{}
 
 class PostInitState extends PostState{}
 

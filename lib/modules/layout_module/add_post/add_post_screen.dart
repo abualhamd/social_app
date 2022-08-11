@@ -18,7 +18,9 @@ class AddPostScreen extends StatelessWidget {
       create: (BuildContext context) => PostCubit(),
       child: BlocConsumer<PostCubit, PostState>(
         listener: (context, postState) {
-          if(postState is PostCreateSuccessState){
+          if (postState is PostCreateSuccessState) {
+            //TODO solve updating posts list issue
+            socialCubit.getPosts();
             Navigator.pop(context);
           }
         },
@@ -45,7 +47,8 @@ class AddPostScreen extends StatelessWidget {
                         postCubit.createPostWithImage(
                             name: socialCubit.userModel!.name);
                       } else {
-                        postCubit.createPost(name: socialCubit.userModel!.name);
+                        postCubit.createPost(
+                            name: socialCubit.userModel!.name);
                       }
                     },
                     child: Text(

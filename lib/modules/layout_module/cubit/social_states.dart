@@ -24,10 +24,6 @@ class SocialUpdatingCoverImageState extends SocialUpdatingState{}
 class SocialCoverImageUpdateSuccess extends SocialState{}
 class SocialCoverImageUpdateError extends SocialState{}
 
-class SocialPostLoadingState extends SocialState{}
-class SocialPostErrorState extends SocialState{}
-class SocialPostSuccessState extends SocialState{}
-
-class SocialPostImageGetState extends SocialUpdatingState{}
-class SocialPostImageSuccessState extends SocialState{}
-class SocialPostImageErrorState extends SocialState{}
+class SocialGetPostsDownloadingState extends SocialState{}
+class SocialGetPostsSuccessState extends SocialState{}
+class SocialGetPostsErrorState extends SocialState{}

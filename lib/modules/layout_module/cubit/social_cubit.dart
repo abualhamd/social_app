@@ -8,11 +8,11 @@ import 'package:social_app/modules/layout_module/add_post/add_post_screen.dart';
 import 'package:social_app/modules/layout_module/cubit/social_states.dart';
 import 'package:social_app/modules/layout_module/users_screen.dart';
 import 'package:social_app/shared/components.dart';
+import '../../../models/post_model.dart';
 import '../../../models/user_model.dart';
 import '../../../shared/constants.dart';
 import '../../../shared/strings.dart';
 import 'package:flutter/material.dart';
-// import '../add_post_screen.dart';
 import '../chats_screen.dart';
 import '../home_screen.dart';
 
@@ -141,28 +141,21 @@ class SocialCubit extends Cubit<SocialState> {
     });
   }
 
-  File? postImage;
-  void getPostImage(){
-    emit(SocialPostImageGetState());
+  List<PostModel>? posts;
 
-    ImagePicker().pickImage(source: ImageSource.gallery).then((value) {
-      // Uri.file(value!.path).pathSegments.last;
-      postImage = File(value!.path);
+  void getPosts(){
+    emit(SocialGetPostsDownloadingState());
 
-      emit(SocialPostImageSuccessState());
+    FirebaseFirestore.instance.collection(MyStrings.collectionPosts).get().then((value) {
+      // value.docs.forEach((element) {
+      //   posts.add(PostModel.fromJson(element.data()));
+      // });
+      posts = value.docs.map((e) => PostModel.fromJson(e.data())).toList();
+
+      emit(SocialGetPostsSuccessState());
     }).catchError((error){
-
-      emit(SocialPostImageErrorState());
+      emit(SocialGetPostsErrorState());
     });
   }
-
-  void createPost(){
-    emit(SocialPostLoadingState());
-
-
-
-
-  }
-
 
 }
