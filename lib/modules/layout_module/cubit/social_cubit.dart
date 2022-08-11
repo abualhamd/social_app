@@ -47,7 +47,7 @@ class SocialCubit extends Cubit<SocialState> {
     emit(SocialUserDataLoadingState());
 
     FirebaseFirestore.instance
-        .collection(MyStrings.collectionName)
+        .collection(MyStrings.collectionUsers)
         .doc(MyConstants.uId)
         .get()
         .then((value) {
@@ -96,7 +96,7 @@ class SocialCubit extends Cubit<SocialState> {
           .then((p) {
         p.ref.getDownloadURL().then((value) {
           FirebaseFirestore.instance
-              .collection(MyStrings.collectionName)
+              .collection(MyStrings.collectionUsers)
               .doc(userModel!.uId)
               .update({
             'profileImage': value,
@@ -124,7 +124,7 @@ class SocialCubit extends Cubit<SocialState> {
           .then((p) {
         p.ref.getDownloadURL().then((value) {
           FirebaseFirestore.instance
-              .collection(MyStrings.collectionName)
+              .collection(MyStrings.collectionUsers)
               .doc(userModel!.uId)
               .update({
             'coverImage': value,

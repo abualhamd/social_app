@@ -7,7 +7,8 @@ abstract class MyStrings{
 
 
 
-  static String collectionName = 'users';
+  static String collectionUsers = 'users';
+  static String collectionPosts = 'posts';
   static String isEmailVerified = 'isEmailVerified';
   static String uId = 'uId';
 

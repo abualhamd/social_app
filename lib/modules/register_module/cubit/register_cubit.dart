@@ -46,7 +46,7 @@ class RegisterCubit extends LoginCubit {
     UserModel model =
         UserModel(name: name, email: email, phone: phone, uId: uId, isEmailVerified: false);
     FirebaseFirestore.instance
-        .collection(MyStrings.collectionName)
+        .collection(MyStrings.collectionUsers)
         .doc(uId)
         .set(model.toMap())
         .then((value) {

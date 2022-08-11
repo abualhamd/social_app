@@ -17,7 +17,11 @@ class AddPostScreen extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => PostCubit(),
       child: BlocConsumer<PostCubit, PostState>(
-        listener: (context, postState) {},
+        listener: (context, postState) {
+          if(postState is PostCreateSuccessState){
+            Navigator.pop(context);
+          }
+        },
         builder: (context, postState) {
           PostCubit postCubit = PostCubit.get(context);
 
@@ -36,7 +40,14 @@ class AddPostScreen extends StatelessWidget {
                 title: Text(socialCubit.titles[Screens.addPost.index]),
                 actions: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (postCubit.postImage != null) {
+                        postCubit.createPostWithImage(
+                            name: socialCubit.userModel!.name);
+                      } else {
+                        postCubit.createPost(name: socialCubit.userModel!.name);
+                      }
+                    },
                     child: Text(
                       MyStrings.post,
                       style: TextStyle(fontSize: 18),
@@ -47,63 +58,70 @@ class AddPostScreen extends StatelessWidget {
               body: Padding(
                 padding: EdgeInsets.symmetric(
                     vertical: size.width / 20, horizontal: size.width / 25),
-                child: Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // SizedBox(height: size.width/25),
-                        Row(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      //TODO if(postState is PostCreateLoadingState)
+                      //   const LinearProgressIndicator(color: Colors.blue,),
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            foregroundImage: NetworkImage(
+                                socialCubit.userModel!.profileImage!),
+                          ),
+                          SizedBox(width: size.width / 40),
+                          Text(
+                            socialCubit.userModel!.name,
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: size.width / 35),
+                      TextField(
+                        controller: postCubit.textController,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          hintText: MyStrings.postHelperText,
+                          border: InputBorder.none,
+                        ),
+                        maxLines: null, //to make the textfield multiline
+                      ),
+                      //TODO fix the image problem
+                      //TODO add tags
+                      if (postCubit.postImage != null)
+                        Stack(
+                          alignment: Alignment.topRight,
                           children: [
-                            CircleAvatar(
-                              foregroundImage: NetworkImage(
-                                  socialCubit.userModel!.profileImage!),
+                            Container(
+                              // padding: EdgeInsets.symmetric(horizontal: size.width/30),
+                              height: size.width / 2.1,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image: FileImage(postCubit.postImage!),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
                             ),
-                            SizedBox(width: size.width / 40),
-                            Text(
-                              socialCubit.userModel!.name,
-                              style: Theme.of(context).textTheme.headline6,
+                            IconButton(
+                              onPressed: () {
+                                postCubit.cancelImage();
+                              },
+                              icon: const Icon(
+                                Icons.cancel_outlined,
+                                color: Colors.white,
+                              ),
                             ),
                           ],
                         ),
-                        TextField(
-                          decoration: InputDecoration(
-                            isDense: true,
-                            hintText: MyStrings.postHelperText,
-                            border: InputBorder.none,
-                          ),
-                          maxLines: null,
-                        ),
-                        //TODO fix the image problem
-                        if (postCubit.postImage != null)
-                          Stack(
-                            alignment: Alignment.topRight,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 30),
-                                height: size.width/2.1,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: DecorationImage(
-                                    image: FileImage(postCubit.postImage!),
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                              IconButton(onPressed: (){postCubit.cancelImage();}, icon: Icon(Icons.cancel_outlined, color: Colors.white,)),
-                            ],
-                          ),
-                        // const SizedBox(
-                        //   height: 20,
-                        // ),
-                      ],
-                    ),
+                    ],
                   ),
                 ),
               ),
               bottomNavigationBar: Padding(
-                padding: EdgeInsets.symmetric(vertical: size.width/20),
+                padding: EdgeInsets.symmetric(vertical: size.width / 20),
                 child: Row(
                   children: [
                     Expanded(
@@ -124,8 +142,7 @@ class AddPostScreen extends StatelessWidget {
                             ),
                             const Text(
                               'add photo',
-                              style:
-                              TextStyle(color: MyColors.defaultColor),
+                              style: TextStyle(color: MyColors.defaultColor),
                             ),
                           ],
                         ),
@@ -143,8 +160,7 @@ class AddPostScreen extends StatelessWidget {
                             ),
                             Text(
                               'tags',
-                              style:
-                              TextStyle(color: MyColors.defaultColor),
+                              style: TextStyle(color: MyColors.defaultColor),
                             ),
                           ],
                         ),
