@@ -45,7 +45,7 @@ class SocialCubit extends Cubit<SocialState> {
 
   void getUserData() {
     emit(SocialUserDataLoadingState());
-
+    // print(MyConstants.uId);
     FirebaseFirestore.instance
         .collection(MyStrings.collectionUsers)
         .doc(MyConstants.uId)
@@ -62,10 +62,10 @@ class SocialCubit extends Cubit<SocialState> {
   int bottomNavIndex = 0;
 
   List<Widget> screens = [
-    HomeScreen(),
-    ChatsScreen(),
-    AddPostScreen(),
-    UsersScreen(),
+    const HomeScreen(),
+    const ChatsScreen(),
+    const AddPostScreen(),
+    const UsersScreen(),
   ];
 
   List<String> titles = [
@@ -143,19 +143,21 @@ class SocialCubit extends Cubit<SocialState> {
 
   List<PostModel>? posts;
 
-  void getPosts(){
+  void getPosts() {
     emit(SocialGetPostsDownloadingState());
 
-    FirebaseFirestore.instance.collection(MyStrings.collectionPosts).get().then((value) {
+    FirebaseFirestore.instance
+        .collection(MyStrings.collectionPosts)
+        .get()
+        .then((value) {
       // value.docs.forEach((element) {
       //   posts.add(PostModel.fromJson(element.data()));
       // });
       posts = value.docs.map((e) => PostModel.fromJson(e.data())).toList();
 
       emit(SocialGetPostsSuccessState());
-    }).catchError((error){
+    }).catchError((error) {
       emit(SocialGetPostsErrorState());
     });
   }
-
 }

@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_app/models/post_model.dart';
 import '../modules/layout_module/cubit/social_cubit.dart';
 import '../modules/layout_module/settings_screen.dart';
-import 'colors.dart';
 import 'constants.dart';
 
 void showToast({required String message, Color color = Colors.red}) async {

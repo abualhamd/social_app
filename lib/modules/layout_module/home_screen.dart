@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
     return ConditionalBuilder(
       condition: cubit.posts != null,
       builder: (context) => SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             Stack(
@@ -30,23 +30,27 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Text(
+                    // TODO upload image and text to firebase
                     'enjoy your summer',
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: size.width/30,),
+            SizedBox(
+              height: size.width / 30,
+            ),
             ListView.separated(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemBuilder: (context, index) => postBuilder(context: context, postModel: cubit.posts![index]),
+                itemBuilder: (context, index) => postBuilder(
+                    context: context, postModel: cubit.posts![index]),
                 separatorBuilder: (context, index) => SizedBox(
-                  height: size.width / 40,
-                ),
+                      height: size.width / 40,
+                    ),
                 itemCount: cubit.posts!.length),
           ],
         ),

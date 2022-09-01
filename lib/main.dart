@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/firebase_options.dart';
 import 'package:social_app/helpers/cache_helper.dart';
-import 'package:social_app/modules/layout_module/cubit/social_states.dart';
 import 'package:social_app/modules/layout_module/social_layout.dart';
 import 'package:social_app/modules/login_module/login_screen.dart';
 import 'package:social_app/shared/strings.dart';
 import 'package:social_app/shared/themes_and_decorations.dart';
 import 'bloc_observer.dart';
 import 'modules/layout_module/cubit/social_cubit.dart';
+import 'modules/layout_module/cubit/social_states.dart';
 import 'shared/constants.dart';
 
 void main() {
@@ -34,19 +34,30 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-    create: (context) => SocialCubit()..getUserData()..getPosts(),
+      create: (MyConstants.uId != null)
+          ? (context) => SocialCubit()
+            ..getUserData()
+            ..getPosts()
+          : (context) => SocialCubit(),
       child: BlocConsumer<SocialCubit, SocialState>(
-        listener: (context, state){},
+        listener: (context, state) {},
         builder: (context, state) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: themeLight,
-            home: (MyConstants.uId != null)
-                 ? SocialLayout()
-                 : LoginScreen(),
+            home: (MyConstants.uId != null) ? SocialLayout() : LoginScreen(),
           );
-        }
+        },
       ),
     );
+    //   BlocProvider(
+    // create: (context) => SocialCubit()..getUserData()..getPosts(),
+    //   child: BlocConsumer<SocialCubit, SocialState>(
+    //     listener: (context, state){},
+    //     builder: (context, state) {
+    //
+    //     }
+    //   ),
+    // );
   }
 }

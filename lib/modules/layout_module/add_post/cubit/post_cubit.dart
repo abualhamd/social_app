@@ -4,14 +4,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:social_app/modules/layout_module/cubit/social_cubit.dart';
 import 'package:social_app/shared/components.dart';
 import 'package:social_app/shared/strings.dart';
 import '../../../../models/post_model.dart';
 import '../../../../shared/constants.dart';
 import 'post_states.dart';
 
-class PostCubit extends SocialCubit {
+class PostCubit extends Cubit<PostState> {
   PostCubit() : super(PostInitState());
 
   static PostCubit get(context) => BlocProvider.of(context);
@@ -57,7 +56,7 @@ class PostCubit extends SocialCubit {
 
       emit(PostCreateSuccessState());
     }).catchError((error) {
-      print(error.toString());
+      // print(error.toString());
 
       emit(PostCreateErrorState());
     });

@@ -47,13 +47,12 @@ class AddPostScreen extends StatelessWidget {
                         postCubit.createPostWithImage(
                             name: socialCubit.userModel!.name);
                       } else {
-                        postCubit.createPost(
-                            name: socialCubit.userModel!.name);
+                        postCubit.createPost(name: socialCubit.userModel!.name);
                       }
                     },
                     child: Text(
                       MyStrings.post,
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
                   ),
                 ],

@@ -25,7 +25,7 @@ class SettingsScreen extends StatelessWidget {
               color: Colors.black,
             ),
           ),
-          title: Text('settings'),
+          title: const Text('settings'),
         ),
         body: Column(
           children: [
@@ -85,12 +85,10 @@ class SettingsScreen extends StatelessWidget {
                       radius: size.width / 9,
                       child: CircleAvatar(
                         radius: size.width / 10,
-                        foregroundImage:
-                            NetworkImage(
-                                (cubit.userModel!.profileImage!.isNotEmpty)
+                        foregroundImage: NetworkImage(
+                            (cubit.userModel!.profileImage!.isNotEmpty)
                                 ? cubit.userModel!.profileImage!
-                                : MyConstants.initProfileImage
-                            ),
+                                : MyConstants.initProfileImage),
                       ),
                     ),
                     InkWell(
@@ -118,7 +116,8 @@ class SettingsScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: size.width / 50),
                     child: Text(
-                      'Random User',
+                      cubit.userModel!.name,
+                      // 'Random User',
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
@@ -211,7 +210,7 @@ class SettingsScreen extends StatelessWidget {
                           child: Padding(
                             padding:
                                 EdgeInsets.symmetric(vertical: size.width / 80),
-                            child: Text(
+                            child: const Text(
                               'Add Photos',
                               style: TextStyle(color: Colors.white),
                             ),
