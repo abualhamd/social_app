@@ -20,7 +20,7 @@ void main() {
           options: DefaultFirebaseOptions.currentPlatform);
       await CacheHelper.init();
 
-      MyConstants.uId = CacheHelper.getData(key: MyStrings.uId);
+      MyConstants.uId = CacheHelper.getData(key: AppStrings.uId);
 
       runApp(MyApp());
     },
@@ -34,11 +34,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (MyConstants.uId != null)
-          ? (context) => SocialCubit()
-            ..getUserData()
-            ..getPosts()
-          : (context) => SocialCubit(),
+      create:
+          // (MyConstants.uId != null)
+          //     ? (context) => SocialCubit()
+          //       ..getUserData()
+          //       ..getPosts()
+          // :
+          (context) => SocialCubit(),
       child: BlocConsumer<SocialCubit, SocialState>(
         listener: (context, state) {},
         builder: (context, state) {

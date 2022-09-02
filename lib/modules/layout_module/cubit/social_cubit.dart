@@ -24,7 +24,10 @@ enum Screens {
 }
 
 class SocialCubit extends Cubit<SocialState> {
-  SocialCubit() : super(SocialInitState());
+  SocialCubit._internal() : super(SocialInitState());
+
+  static final _instance = SocialCubit._internal();
+  factory SocialCubit() => _instance;
 
   static SocialCubit get(context) => BlocProvider.of(context);
 
@@ -33,7 +36,7 @@ class SocialCubit extends Cubit<SocialState> {
   void emailVerification() {
     emit(SocialVerificationLoadingState());
     FirebaseAuth.instance.currentUser!.sendEmailVerification().then((value) {
-      showToast(message: MyStrings.verificationMailSent);
+      showToast(message: AppStrings.verificationMailSent);
 
       emit(SocialVerificationSuccessState());
     }).catchError((error) {
@@ -47,7 +50,7 @@ class SocialCubit extends Cubit<SocialState> {
     emit(SocialUserDataLoadingState());
     // print(MyConstants.uId);
     FirebaseFirestore.instance
-        .collection(MyStrings.collectionUsers)
+        .collection(AppStrings.collectionUsers)
         .doc(MyConstants.uId)
         .get()
         .then((value) {
@@ -96,7 +99,7 @@ class SocialCubit extends Cubit<SocialState> {
           .then((p) {
         p.ref.getDownloadURL().then((value) {
           FirebaseFirestore.instance
-              .collection(MyStrings.collectionUsers)
+              .collection(AppStrings.collectionUsers)
               .doc(userModel!.uId)
               .update({
             'profileImage': value,
@@ -124,7 +127,7 @@ class SocialCubit extends Cubit<SocialState> {
           .then((p) {
         p.ref.getDownloadURL().then((value) {
           FirebaseFirestore.instance
-              .collection(MyStrings.collectionUsers)
+              .collection(AppStrings.collectionUsers)
               .doc(userModel!.uId)
               .update({
             'coverImage': value,
@@ -141,23 +144,37 @@ class SocialCubit extends Cubit<SocialState> {
     });
   }
 
-  List<PostModel>? posts;
+  List<PostModel> posts = [];
 
-  void getPosts() {
+  void getPosts() async {
     emit(SocialGetPostsDownloadingState());
 
-    FirebaseFirestore.instance
-        .collection(MyStrings.collectionPosts)
-        .get()
-        .then((value) {
-      // value.docs.forEach((element) {
-      //   posts.add(PostModel.fromJson(element.data()));
-      // });
-      posts = value.docs.map((e) => PostModel.fromJson(e.data())).toList();
+    var response = await FirebaseFirestore.instance
+        .collection(AppStrings.collectionPosts)
+        .get();
+    try {
+      for (var post in response.docs) {
+        var likes =
+            await post.reference.collection(AppStrings.collectionLikes).get();
 
+        posts.add(PostModel.fromJson(post.data(), post.id, likes.docs.length));
+      }
       emit(SocialGetPostsSuccessState());
-    }).catchError((error) {
+    } catch (error) {
       emit(SocialGetPostsErrorState());
+    }
+  }
+
+  void likePost(String postId) {
+    FirebaseFirestore.instance
+        .collection(AppStrings.collectionPosts)
+        .doc(postId)
+        .collection(AppStrings.collectionLikes)
+        .doc(userModel!.uId)
+        .set({'like': true}).then((value) {
+      emit(SocialLikePostSuccessState());
+    }).catchError((error) {
+      emit(SocialLikePostErrorState());
     });
   }
 }

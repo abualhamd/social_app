@@ -40,14 +40,15 @@ class LoginCubit extends Cubit<LoginState> {
   void userLogin() {
     emit(LoginLoadingState());
 
-    FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text, password: passwordController.text).then((value) {
-          CacheHelper.setData(key: MyStrings.uId, value: value.user!.uid);
-          MyConstants.uId = value.user!.uid;
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text)
+        .then((value) {
+      CacheHelper.setData(key: AppStrings.uId, value: value.user!.uid);
+      MyConstants.uId = value.user!.uid;
 
-          emit(LoginSuccessState());
-    }).catchError((error){
-
+      emit(LoginSuccessState());
+    }).catchError((error) {
       showToast(message: error.toString());
       emit(LoginErrorState());
     });

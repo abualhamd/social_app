@@ -40,7 +40,7 @@ class PostCubit extends Cubit<PostState> {
 
   void uploadPostToFireStore(String name) {
     FirebaseFirestore.instance
-        .collection(MyStrings
+        .collection(AppStrings
             .collectionPosts) //.doc(MyConstants.uId).collection()//${MyConstants.uId}/TODO modify the path
         .add(
           PostModel(

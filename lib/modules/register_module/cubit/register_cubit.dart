@@ -24,13 +24,17 @@ class RegisterCubit extends LoginCubit {
         .createUserWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
         .then((value) {
-          userCreate(name: nameController.text, email: emailController.text, phone: phoneController.text, uId: value.user!.uid);
-          //TODO fix_error of showToast
-          showToast(
-              message: MyStrings.signInSuccessMessage, color: MyColors.greenAlert);
-          //TODO CacheHelper.setData(key: MyStrings.uId, value: value.user!.uid);
+      userCreate(
+          name: nameController.text,
+          email: emailController.text,
+          phone: phoneController.text,
+          uId: value.user!.uid);
+      //TODO fix_error of showToast
+      showToast(
+          message: AppStrings.signInSuccessMessage, color: MyColors.greenAlert);
+      //TODO CacheHelper.setData(key: MyStrings.uId, value: value.user!.uid);
 
-          emit(RegisterSuccessState());
+      emit(RegisterSuccessState());
     }).catchError((error) {
       showToast(message: error.toString());
       emit(RegisterErrorState());
@@ -43,14 +47,17 @@ class RegisterCubit extends LoginCubit {
       required String phone,
       required String uId}) {
     emit(RegisterCreateUserLoadingState());
-    UserModel model =
-        UserModel(name: name, email: email, phone: phone, uId: uId, isEmailVerified: false);
+    UserModel model = UserModel(
+        name: name,
+        email: email,
+        phone: phone,
+        uId: uId,
+        isEmailVerified: false);
     FirebaseFirestore.instance
-        .collection(MyStrings.collectionUsers)
+        .collection(AppStrings.collectionUsers)
         .doc(uId)
         .set(model.toMap())
         .then((value) {
-
       emit(RegisterCreateUserSuccessState());
     }).catchError((error) {
       showToast(message: error.toString());

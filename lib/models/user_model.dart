@@ -24,7 +24,7 @@ class UserModel {
     email = json['email'];
     phone = json['phone'];
     uId = json['uId'];
-    isEmailVerified = json[MyStrings.isEmailVerified];
+    isEmailVerified = json[AppStrings.isEmailVerified];
     profileImage = json['profileImage'];
     coverImage = json['coverImage'];
   }
@@ -35,7 +35,7 @@ class UserModel {
       'email': email,
       'phone': phone,
       'uId': uId,
-      MyStrings.isEmailVerified: isEmailVerified,
+      AppStrings.isEmailVerified: isEmailVerified,
       'coverImage': coverImage,
       'profileImage': profileImage,
     };

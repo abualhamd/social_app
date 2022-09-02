@@ -1,8 +1,9 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app/modules/layout_module/cubit/social_cubit.dart';
-
 import '../../shared/components.dart';
+
+// TODO add cached_internet_image
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class HomeScreen extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     SocialCubit cubit = SocialCubit.get(context);
     return ConditionalBuilder(
-      condition: cubit.posts != null,
+      condition: true, //cubit.posts.isNotEmpty,
       builder: (context) => SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
@@ -46,12 +47,12 @@ class HomeScreen extends StatelessWidget {
             ListView.separated(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemBuilder: (context, index) => postBuilder(
-                    context: context, postModel: cubit.posts![index]),
+                itemBuilder: (context, index) =>
+                    PostBuilder(postModel: cubit.posts[index]),
                 separatorBuilder: (context, index) => SizedBox(
                       height: size.width / 40,
                     ),
-                itemCount: cubit.posts!.length),
+                itemCount: cubit.posts.length),
           ],
         ),
       ),
