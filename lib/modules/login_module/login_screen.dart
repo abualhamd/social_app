@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_app/modules/layout_module/cubit/social_cubit.dart';
 import '../../shared/themes_and_decorations.dart';
-import '../layout_module/social_layout.dart';
+import '../layout/social_layout.dart';
 import '../login_module/cubit/login_states.dart';
 import '../login_module/cubit/login_cubit.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -19,7 +18,7 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginSuccessState) {
             // TODO
-            BlocProvider.of<SocialCubit>(context).getPosts();
+            // BlocProvider.of<SocialCubit>(context).getPosts();
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => SocialLayout()));
           }

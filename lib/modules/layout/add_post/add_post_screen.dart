@@ -1,8 +1,8 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_app/modules/layout_module/add_post/cubit/post_states.dart';
-import 'package:social_app/modules/layout_module/cubit/social_cubit.dart';
+import 'package:social_app/modules/layout/add_post/cubit/post_states.dart';
+import 'package:social_app/modules/layout/cubit/social_cubit.dart';
 import 'package:social_app/shared/colors.dart';
 import 'package:social_app/shared/strings.dart';
 import 'cubit/post_cubit.dart';
@@ -75,7 +75,8 @@ class AddPostScreen extends StatelessWidget {
                                 children: [
                                   CircleAvatar(
                                     foregroundImage: NetworkImage(
-                                        socialCubit.userModel!.profileImage!),
+                                        socialCubit.userModel?.profileImage ??
+                                            ''),
                                   ),
                                   SizedBox(width: size.width / 40),
                                   Text(
@@ -148,13 +149,13 @@ class AddPostScreen extends StatelessWidget {
                                           horizontal: size.width / 60),
                                       child: const Icon(
                                         Icons.add_a_photo_outlined,
-                                        color: MyColors.defaultColor,
+                                        color: AppColors.defaultColor,
                                       ),
                                     ),
                                     const Text(
                                       'add photo',
                                       style: TextStyle(
-                                          color: MyColors.defaultColor),
+                                          color: AppColors.defaultColor),
                                     ),
                                   ],
                                 ),
@@ -168,12 +169,12 @@ class AddPostScreen extends StatelessWidget {
                                   children: const [
                                     Icon(
                                       Icons.tag_outlined,
-                                      color: MyColors.defaultColor,
+                                      color: AppColors.defaultColor,
                                     ),
                                     Text(
                                       'tags',
                                       style: TextStyle(
-                                          color: MyColors.defaultColor),
+                                          color: AppColors.defaultColor),
                                     ),
                                   ],
                                 ),

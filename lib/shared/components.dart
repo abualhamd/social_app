@@ -2,8 +2,9 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_app/models/post_model.dart';
-import '../modules/layout_module/cubit/social_cubit.dart';
-import '../modules/layout_module/settings_screen.dart';
+import '../modules/layout/cubit/social_cubit.dart';
+import '../modules/layout/settings_screen.dart';
+import 'colors.dart';
 import 'constants.dart';
 
 void showToast({required String message, Color color = Colors.red}) async {
@@ -81,6 +82,7 @@ class BuildLayout extends StatelessWidget {
 
 class PostBuilder extends StatelessWidget {
   final PostModel postModel;
+
   const PostBuilder({required this.postModel, super.key});
 
   @override
@@ -91,7 +93,7 @@ class PostBuilder extends StatelessWidget {
       child: Card(
         // clipBehavior: Clip.antiAliasWithSaveLayer,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(MyConstants.postRadius),
+          borderRadius: BorderRadius.circular(Constants.postRadius),
         ),
         elevation: 30,
         child: Padding(
@@ -107,7 +109,7 @@ class PostBuilder extends StatelessWidget {
                     foregroundImage: NetworkImage(SocialCubit.get(context)
                             .userModel!
                             .profileImage ??
-                        MyConstants
+                        Constants
                             .initProfileImage), //AssetImage('lib/assets/cool.jpg'),
                   ),
                   SizedBox(
@@ -126,9 +128,10 @@ class PostBuilder extends StatelessWidget {
                       )
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   IconButton(
-                      onPressed: () {}, icon: Icon(Icons.more_horiz_outlined)),
+                      onPressed: () {},
+                      icon: const Icon(Icons.more_horiz_outlined)),
                 ],
               ),
               SizedBox(
@@ -138,7 +141,7 @@ class PostBuilder extends StatelessWidget {
                 postModel.text!,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               // Wrap(
@@ -237,7 +240,8 @@ class PostBuilder extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         foregroundImage: NetworkImage(
-                            SocialCubit.get(context).userModel!.profileImage!),
+                            SocialCubit.get(context).userModel?.profileImage ??
+                                ''),
                       ),
                       SizedBox(
                         width: size.width / 40,
@@ -258,174 +262,49 @@ class PostBuilder extends StatelessWidget {
   }
 }
 
-// Widget postBuilder(
-//     {required BuildContext context, required PostModel postModel}) {
-//   final Size size = MediaQuery.of(context).size;
+////////////////////////////////////////////////////////////////////////////////
+// message_chat_screen
+class BubbleMessageBuilder extends StatelessWidget {
+  const BubbleMessageBuilder({required this.text, required this.isMe, Key? key})
+      : super(key: key);
 
-//   return Padding(
-//     padding: EdgeInsets.symmetric(horizontal: size.width / 50),
-//     child: Card(
-//       // clipBehavior: Clip.antiAliasWithSaveLayer,
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(MyConstants.postRadius),
-//       ),
-//       elevation: 30,
-//       child: Padding(
-//         padding: const EdgeInsets.only(bottom: 0, top: 10, left: 20, right: 20),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Row(
-//               children: [
-//                 CircleAvatar(
-//                   radius: size.width / 15,
-//                   foregroundImage: NetworkImage(SocialCubit.get(context)
-//                           .userModel!
-//                           .profileImage ??
-//                       MyConstants
-//                           .initProfileImage), //AssetImage('lib/assets/cool.jpg'),
-//                 ),
-//                 SizedBox(
-//                   width: size.width / 50,
-//                 ),
-//                 Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Text(postModel.name),
-//                     SizedBox(
-//                       height: size.width / 150,
-//                     ),
-//                     Text(
-//                       postModel.date,
-//                       style: Theme.of(context).textTheme.caption,
-//                     )
-//                   ],
-//                 ),
-//                 Spacer(),
-//                 IconButton(
-//                     onPressed: () {}, icon: Icon(Icons.more_horiz_outlined)),
-//               ],
-//             ),
-//             SizedBox(
-//               height: size.width / 20,
-//             ),
-//             Text(
-//               postModel.text!,
-//               style: Theme.of(context).textTheme.bodyMedium,
-//             ),
-//             SizedBox(
-//               height: 15,
-//             ),
-//             // Wrap(
-//             //   children: [
-//             //     InkWell(
-//             //       onTap: () {},
-//             //       child: Padding(
-//             //         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-//             //         child: Text(
-//             //           '#software',
-//             //           style: TextStyle(color: MyColors.defaultColor),
-//             //         ),
-//             //       ),
-//             //     ),
-//             //     InkWell(
-//             //       onTap: () {},
-//             //       child: Padding(
-//             //         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-//             //         child: Text(
-//             //           '#software',
-//             //           style: TextStyle(color: MyColors.defaultColor),
-//             //         ),
-//             //       ),
-//             //     ),
-//             //     InkWell(
-//             //       onTap: () {},
-//             //       child: Padding(
-//             //         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-//             //         child: Text(
-//             //           '#software',
-//             //           style: TextStyle(color: MyColors.defaultColor),
-//             //         ),
-//             //       ),
-//             //     ),
-//             //     InkWell(
-//             //       onTap: () {},
-//             //       child: Padding(
-//             //         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-//             //         child: Text(
-//             //           '#software',
-//             //           style: TextStyle(color: MyColors.defaultColor),
-//             //         ),
-//             //       ),
-//             //     ),
-//             //     InkWell(
-//             //       onTap: () {},
-//             //       child: Padding(
-//             //         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-//             //         child: Text(
-//             //           '#software',
-//             //           style: TextStyle(color: MyColors.defaultColor),
-//             //         ),
-//             //       ),
-//             //     ),
-//             //   ],
-//             // ),
-//             if (postModel.postImage != null)
-//               Padding(
-//                 padding: EdgeInsets.symmetric(vertical: 5),
-//                 child: Container(
-//                   height: 200,
-//                   width: double.infinity,
-//                   decoration: BoxDecoration(
-//                     borderRadius: BorderRadius.circular(10),
-//                     image: DecorationImage(
-//                       fit: BoxFit.fill,
-//                       image: NetworkImage(postModel.postImage!),
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             Row(
-//               children: [
-//                 IconButton(
-//                     onPressed: () {}, icon: Icon(Icons.heart_broken_outlined)),
-//                 Text('20'),
-//                 Spacer(),
-//                 IconButton(
-//                     onPressed: () {}, icon: Icon(Icons.mode_comment_outlined)),
-//                 Text('8 comments'),
-//               ],
-//             ),
-//             Container(
-//               height: 1,
-//               color: Colors.grey,
-//             ),
-//             Padding(
-//               padding: EdgeInsets.symmetric(
-//                 vertical: size.width / 40,
-//               ),
-//               child: InkWell(
-//                 onTap: () {},
-//                 child: Row(
-//                   children: [
-//                     CircleAvatar(
-//                       foregroundImage: NetworkImage(
-//                           SocialCubit.get(context).userModel!.profileImage!),
-//                     ),
-//                     SizedBox(
-//                       width: size.width / 40,
-//                     ),
-//                     Text(
-//                       'write a comment',
-//                       style: Theme.of(context).textTheme.caption,
-//                     )
-//                   ],
-//                 ),
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     ),
-//   );
-// }
+  final String text;
+  final bool isMe;
+
+  @override
+  Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double messageEdgeRadius = width / 20;
+    final curvedRadius = Radius.circular(messageEdgeRadius);
+    const nonCurvedRadius = Radius.circular(0);
+
+    return Column(
+      crossAxisAlignment:
+          isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: width / 30, vertical: width / 45),
+          child: Material(
+            elevation: 2,
+            color: isMe ? AppColors.defaultColor : AppColors.othersMessageColor,
+            borderRadius: BorderRadius.only(
+              topLeft: isMe ? curvedRadius : nonCurvedRadius,
+              topRight: isMe ? nonCurvedRadius : curvedRadius,
+              bottomLeft: curvedRadius,
+              bottomRight: curvedRadius,
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: width / 30, vertical: width / 45),
+              child: Text(
+                text,
+                style: TextStyle(color: Colors.white, fontSize: width / 20),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

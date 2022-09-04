@@ -45,7 +45,7 @@ class LoginCubit extends Cubit<LoginState> {
             email: emailController.text, password: passwordController.text)
         .then((value) {
       CacheHelper.setData(key: AppStrings.uId, value: value.user!.uid);
-      MyConstants.uId = value.user!.uid;
+      Constants.uId = value.user!.uid;
 
       emit(LoginSuccessState());
     }).catchError((error) {

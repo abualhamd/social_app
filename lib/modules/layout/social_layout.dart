@@ -1,12 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_app/modules/layout_module/cubit/social_cubit.dart';
-import 'package:social_app/modules/layout_module/cubit/social_states.dart';
+import 'package:social_app/modules/layout/cubit/social_cubit.dart';
+import 'package:social_app/modules/layout/cubit/social_states.dart';
 import 'package:social_app/shared/components.dart';
 import 'package:social_app/shared/strings.dart';
-
-import '../../shared/constants.dart';
 import 'add_post/add_post_screen.dart';
 
 class SocialLayout extends StatelessWidget {
@@ -14,14 +12,11 @@ class SocialLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // SocialCubit cubit = SocialCubit.get(context);
-    // ..getUserData()
-    // ..getPosts();
-
     return BlocProvider(
       create: (context) => SocialCubit()
         ..getUserData()
-        ..getPosts(),
+        ..getPosts()
+        ..getAllUsers(),
       child: BlocConsumer<SocialCubit, SocialState>(
         listener: (context, state) {
           if (state is SocialAddPostState) {

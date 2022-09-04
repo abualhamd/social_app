@@ -1,6 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:social_app/modules/layout_module/cubit/social_cubit.dart';
+import 'package:social_app/modules/layout/cubit/social_cubit.dart';
 import '../../shared/components.dart';
 
 // TODO add cached_internet_image

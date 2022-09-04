@@ -46,7 +46,7 @@ class PostCubit extends Cubit<PostState> {
           PostModel(
                   name: name,
                   date: DateTime.now().toString(),
-                  uId: MyConstants.uId!,
+                  uId: Constants.uId!,
                   text: textController.text,
                   postImage: _imageUrl)
               .toMap(),

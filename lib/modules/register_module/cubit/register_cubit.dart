@@ -31,7 +31,7 @@ class RegisterCubit extends LoginCubit {
           uId: value.user!.uid);
       //TODO fix_error of showToast
       showToast(
-          message: AppStrings.signInSuccessMessage, color: MyColors.greenAlert);
+          message: AppStrings.signInSuccessMessage, color: AppColors.greenAlert);
       //TODO CacheHelper.setData(key: MyStrings.uId, value: value.user!.uid);
 
       emit(RegisterSuccessState());

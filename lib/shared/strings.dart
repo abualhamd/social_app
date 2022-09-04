@@ -8,6 +8,8 @@ abstract class AppStrings {
   static String collectionUsers = 'users';
   static String collectionPosts = 'posts';
   static String collectionLikes = 'likes';
+  static String collectionChats = 'chats';
+  static String collectionMessages = 'messages';
   static String isEmailVerified = 'isEmailVerified';
   static String uId = 'uId';
 }

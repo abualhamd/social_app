@@ -1,7 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:social_app/modules/layout_module/cubit/social_cubit.dart';
-import 'package:social_app/modules/layout_module/cubit/social_states.dart';
+import 'package:social_app/modules/layout/cubit/social_cubit.dart';
+import 'package:social_app/modules/layout/cubit/social_states.dart';
 import 'package:social_app/shared/colors.dart';
 import 'package:social_app/shared/constants.dart';
 
@@ -54,7 +54,7 @@ class SettingsScreen extends StatelessWidget {
                                         (cubit.userModel!.coverImage!
                                                 .isNotEmpty)
                                             ? cubit.userModel!.coverImage!
-                                            : MyConstants.initCoverImage,
+                                            : Constants.initCoverImage,
                                       ),
                                       fit: BoxFit.fill,
                                     ),
@@ -92,7 +92,7 @@ class SettingsScreen extends StatelessWidget {
                                 foregroundImage: NetworkImage(
                                     (cubit.userModel!.profileImage!.isNotEmpty)
                                         ? cubit.userModel!.profileImage!
-                                        : MyConstants.initProfileImage),
+                                        : Constants.initProfileImage),
                               ),
                             ),
                             InkWell(
@@ -220,7 +220,7 @@ class SettingsScreen extends StatelessWidget {
                                   style: const ButtonStyle(
                                       backgroundColor:
                                           MaterialStatePropertyAll<Color>(
-                                    MyColors.defaultColor,
+                                    AppColors.defaultColor,
                                   ) //MyColors.defaultColor,
                                       ),
                                   child: Padding(
@@ -239,7 +239,7 @@ class SettingsScreen extends StatelessWidget {
                               InkWell(
                                 child: Icon(
                                   Icons.edit_outlined,
-                                  color: MyColors.defaultColor,
+                                  color: AppColors.defaultColor,
                                   size: size.width / 17,
                                 ),
                               ),

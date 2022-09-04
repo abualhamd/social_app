@@ -4,9 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:social_app/modules/layout_module/add_post/add_post_screen.dart';
-import 'package:social_app/modules/layout_module/cubit/social_states.dart';
-import 'package:social_app/modules/layout_module/users_screen.dart';
+import 'package:social_app/modules/layout/add_post/add_post_screen.dart';
+import 'package:social_app/modules/layout/cubit/social_states.dart';
+import 'package:social_app/modules/layout/users_screen.dart';
 import 'package:social_app/shared/components.dart';
 import '../../../models/post_model.dart';
 import '../../../models/user_model.dart';
@@ -51,7 +51,7 @@ class SocialCubit extends Cubit<SocialState> {
     // print(MyConstants.uId);
     FirebaseFirestore.instance
         .collection(AppStrings.collectionUsers)
-        .doc(MyConstants.uId)
+        .doc(Constants.uId)
         .get()
         .then((value) {
       userModel = UserModel.fromJson(value.data());
@@ -176,5 +176,24 @@ class SocialCubit extends Cubit<SocialState> {
     }).catchError((error) {
       emit(SocialLikePostErrorState());
     });
+  }
+
+  List<UserModel> allUsers = [];
+  void getAllUsers() async {
+    allUsers = [];
+    emit(SocialGetUsersDownloadingState());
+
+    try {
+      final response = await FirebaseFirestore.instance
+          .collection(AppStrings.collectionUsers)
+          .get();
+
+      for (var user in response.docs) {
+        allUsers.add(UserModel.fromJson(user.data()));
+      }
+      emit(SocialGetUsersSuccessState());
+    } catch (e) {
+      emit(SocialGetUsersErrorState());
+    }
   }
 }

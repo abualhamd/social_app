@@ -26,7 +26,7 @@ final ThemeData themeLight = ThemeData(
     backgroundColor: Colors.white,
     elevation: 0,
     titleTextStyle: TextStyle(
-      color: MyColors.darkModeColor,
+      color: AppColors.darkModeColor,
       fontWeight: FontWeight.bold,
       fontSize: 25.0,
     ),
@@ -40,7 +40,7 @@ final ThemeData themeLight = ThemeData(
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
-    selectedItemColor: MyColors.defaultColor,
+    selectedItemColor: AppColors.defaultColor,
     elevation: 20.0,
   ),
 );
@@ -48,7 +48,7 @@ final ThemeData themeLight = ThemeData(
 final ThemeData themeDark = ThemeData(
   appBarTheme: const AppBarTheme(
       titleSpacing: kHorizontalPaddingValue,
-      backgroundColor: MyColors.darkModeColor,
+      backgroundColor: AppColors.darkModeColor,
       elevation: 0,
       titleTextStyle: TextStyle(
         color: Colors.white,
@@ -59,17 +59,17 @@ final ThemeData themeDark = ThemeData(
         color: Colors.white,
       ),
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: MyColors.darkModeColor,
+        statusBarColor: AppColors.darkModeColor,
         statusBarIconBrightness: Brightness.dark,
       )),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: MyColors.darkModeColor,
+    backgroundColor: AppColors.darkModeColor,
     type: BottomNavigationBarType.fixed,
     selectedItemColor: Colors.blue,
     unselectedItemColor: Colors.white,
     elevation: 20.0,
   ),
-  scaffoldBackgroundColor: MyColors.darkModeColor,
+  scaffoldBackgroundColor: AppColors.darkModeColor,
   textTheme: const TextTheme(
     bodyText1: TextStyle(color: Colors.white),
     bodyText2: TextStyle(color: Colors.white),
