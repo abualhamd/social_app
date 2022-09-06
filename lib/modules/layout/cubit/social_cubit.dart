@@ -30,6 +30,7 @@ class SocialCubit extends Cubit<SocialState> {
   factory SocialCubit() => _instance;
 
   static SocialCubit get(context) => BlocProvider.of(context);
+  FirebaseFirestore firestoreInstance = FirebaseFirestore.instance;
 
   UserModel? userModel;
 
@@ -49,7 +50,7 @@ class SocialCubit extends Cubit<SocialState> {
   void getUserData() {
     emit(SocialUserDataLoadingState());
     // print(MyConstants.uId);
-    FirebaseFirestore.instance
+    firestoreInstance
         .collection(AppStrings.collectionUsers)
         .doc(Constants.uId)
         .get()
@@ -98,7 +99,7 @@ class SocialCubit extends Cubit<SocialState> {
           .putFile(File(value.path))
           .then((p) {
         p.ref.getDownloadURL().then((value) {
-          FirebaseFirestore.instance
+          firestoreInstance
               .collection(AppStrings.collectionUsers)
               .doc(userModel!.uId)
               .update({
@@ -126,7 +127,7 @@ class SocialCubit extends Cubit<SocialState> {
           .putFile(File(value.path))
           .then((p) {
         p.ref.getDownloadURL().then((value) {
-          FirebaseFirestore.instance
+          firestoreInstance
               .collection(AppStrings.collectionUsers)
               .doc(userModel!.uId)
               .update({
@@ -146,36 +147,70 @@ class SocialCubit extends Cubit<SocialState> {
 
   List<PostModel> posts = [];
 
-  void getPosts() async {
-    emit(SocialGetPostsDownloadingState());
-
-    var response = await FirebaseFirestore.instance
+  Stream<QuerySnapshot<Map<String, dynamic>>> postsStream() {
+    return FirebaseFirestore.instance
         .collection(AppStrings.collectionPosts)
-        .get();
-    try {
-      for (var post in response.docs) {
-        var likes =
-            await post.reference.collection(AppStrings.collectionLikes).get();
+        .orderBy('date')
+        .snapshots();
+  }
 
-        posts.add(PostModel.fromJson(post.data(), post.id, likes.docs.length));
+  Iterable<QueryDocumentSnapshot<Map<String, dynamic>>>? streamPosts;
+
+  void getPostsFromStream(
+      {required AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot}) {
+    try {
+      streamPosts = snapshot.data?.docs.reversed;
+      posts = [];
+      for (var post
+          in streamPosts ?? <QueryDocumentSnapshot<Map<String, dynamic>>>[]) {
+        List<String> likes = [];
+        post.reference
+            .collection(AppStrings.collectionLikes)
+            .get()
+            .then((value) {
+          for (var like in value.docs) {
+            likes.add(like.id);
+          }
+          // emit(state)
+        });
+
+        posts.add(PostModel.fromJson(post.data(), post.id, likes));
       }
-      emit(SocialGetPostsSuccessState());
+      emit(SocialGetPostsStreamSuccessState());
     } catch (error) {
-      emit(SocialGetPostsErrorState());
+      emit(SocialGetPostsStreamErrorState());
     }
   }
 
-  void likePost(String postId) {
-    FirebaseFirestore.instance
+  void likePost({required PostModel postModel}) {
+    var likeRef = firestoreInstance
         .collection(AppStrings.collectionPosts)
-        .doc(postId)
+        .doc(postModel.postId)
         .collection(AppStrings.collectionLikes)
-        .doc(userModel!.uId)
-        .set({'like': true}).then((value) {
-      emit(SocialLikePostSuccessState());
-    }).catchError((error) {
-      emit(SocialLikePostErrorState());
-    });
+        .doc(userModel!.uId);
+
+    if (!postModel.likes.contains(Constants.uId)) {
+      likeRef.set({'like': true}).then((value) {
+        emit(SocialLikePostSuccessState());
+      }).catchError((error) {
+        emit(SocialLikePostErrorState());
+      });
+    } else {
+      likeRef.delete().then((value) {
+        emit(SocialRemoveLikeSuccessState());
+      }).catchError((error) {
+        emit(SocialRemoveLikeErrorState());
+      });
+    }
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getLikesStream(
+      {required PostModel postModel}) {
+    return firestoreInstance
+        .collection(AppStrings.collectionPosts)
+        .doc(postModel.postId)
+        .collection(AppStrings.collectionLikes)
+        .snapshots();
   }
 
   List<UserModel> allUsers = [];
@@ -184,12 +219,14 @@ class SocialCubit extends Cubit<SocialState> {
     emit(SocialGetUsersDownloadingState());
 
     try {
-      final response = await FirebaseFirestore.instance
-          .collection(AppStrings.collectionUsers)
-          .get();
+      final response =
+          await firestoreInstance.collection(AppStrings.collectionUsers).get();
 
       for (var user in response.docs) {
-        allUsers.add(UserModel.fromJson(user.data()));
+        var data = user.data();
+        if (data['uId'] != userModel!.uId) {
+          allUsers.add(UserModel.fromJson(data));
+        }
       }
       emit(SocialGetUsersSuccessState());
     } catch (e) {

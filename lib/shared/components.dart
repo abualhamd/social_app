@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_app/models/post_model.dart';
+import 'package:social_app/shared/strings.dart';
 import '../modules/layout/cubit/social_cubit.dart';
 import '../modules/layout/settings_screen.dart';
 import 'colors.dart';
@@ -88,6 +90,7 @@ class PostBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    SocialCubit cubit = SocialCubit.get(context);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: size.width / 50),
       child: Card(
@@ -144,60 +147,6 @@ class PostBuilder extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              // Wrap(
-              //   children: [
-              //     InkWell(
-              //       onTap: () {},
-              //       child: Padding(
-              //         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-              //         child: Text(
-              //           '#software',
-              //           style: TextStyle(color: MyColors.defaultColor),
-              //         ),
-              //       ),
-              //     ),
-              //     InkWell(
-              //       onTap: () {},
-              //       child: Padding(
-              //         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-              //         child: Text(
-              //           '#software',
-              //           style: TextStyle(color: MyColors.defaultColor),
-              //         ),
-              //       ),
-              //     ),
-              //     InkWell(
-              //       onTap: () {},
-              //       child: Padding(
-              //         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-              //         child: Text(
-              //           '#software',
-              //           style: TextStyle(color: MyColors.defaultColor),
-              //         ),
-              //       ),
-              //     ),
-              //     InkWell(
-              //       onTap: () {},
-              //       child: Padding(
-              //         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-              //         child: Text(
-              //           '#software',
-              //           style: TextStyle(color: MyColors.defaultColor),
-              //         ),
-              //       ),
-              //     ),
-              //     InkWell(
-              //       onTap: () {},
-              //       child: Padding(
-              //         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-              //         child: Text(
-              //           '#software',
-              //           style: TextStyle(color: MyColors.defaultColor),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
               if (postModel.postImage != null)
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 5),
@@ -216,9 +165,33 @@ class PostBuilder extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.heart_broken_outlined)),
-                  Text(postModel.likes.toString()),
+                    onPressed: () {
+                      cubit.likePost(postModel: postModel);
+                    },
+                    icon: (postModel.likes.contains(cubit.userModel!.uId))
+                        // TODO color not showing
+                        ? Icon(Icons.heart_broken, color: Colors.red)
+                        : Icon(
+                            Icons.heart_broken_outlined,
+                          ),
+                  ),
+                  StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      stream: cubit.getLikesStream(postModel: postModel),
+                      builder: (context, snapshot) {
+                        var likat = snapshot.data?.docs;
+                        for (var like in likat ??
+                            <QueryDocumentSnapshot<Map<String, dynamic>>>[]) {
+                          like.id;
+                        }
+                        List<QueryDocumentSnapshot<Map<String, dynamic>>>
+                            likesDocs = snapshot.data?.docs ?? [];
+                        postModel.likes = [];
+                        likesDocs.forEach((likesDoc) {
+                          postModel.likes.add(likesDoc.id);
+                        });
+                        // postModel.likes = snapshot.data?.docs.length ?? 0;
+                        return Text(postModel.likes.length.toString());
+                      }),
                   Spacer(),
                   IconButton(
                       onPressed: () {},

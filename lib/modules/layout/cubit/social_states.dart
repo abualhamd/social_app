@@ -38,9 +38,17 @@ class SocialGetPostsSuccessState extends SocialState {}
 
 class SocialGetPostsErrorState extends SocialState {}
 
+class SocialGetPostsStreamSuccessState extends SocialState {}
+
+class SocialGetPostsStreamErrorState extends SocialState {}
+
 class SocialLikePostSuccessState extends SocialState {}
 
 class SocialLikePostErrorState extends SocialState {}
+
+class SocialRemoveLikeSuccessState extends SocialState {}
+
+class SocialRemoveLikeErrorState extends SocialState {}
 
 class SocialGetUsersDownloadingState extends SocialState {}
 

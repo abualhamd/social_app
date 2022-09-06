@@ -21,7 +21,7 @@ class AddPostScreen extends StatelessWidget {
         listener: (context, postState) {
           if (postState is PostCreateSuccessState) {
             //TODO solve updating posts list issue
-            socialCubit.getPosts();
+            // socialCubit.getPosts();
             Navigator.pop(context);
           }
         },

@@ -15,7 +15,7 @@ class SocialLayout extends StatelessWidget {
     return BlocProvider(
       create: (context) => SocialCubit()
         ..getUserData()
-        ..getPosts()
+        // ..getPosts()
         ..getAllUsers(),
       child: BlocConsumer<SocialCubit, SocialState>(
         listener: (context, state) {
@@ -28,7 +28,7 @@ class SocialLayout extends StatelessWidget {
           SocialCubit cubit = SocialCubit.get(context);
 
           return BuildLayout(
-            condition: (cubit.userModel != null && cubit.posts.isNotEmpty),
+            condition: (cubit.userModel != null),
             widget: (!FirebaseAuth.instance.currentUser!.emailVerified)
                 ? Container(
                     color: Colors.amber.withOpacity(.7),

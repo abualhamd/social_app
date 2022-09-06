@@ -60,7 +60,7 @@ class MessageChatScreen extends StatelessWidget {
                             final messages =
                                 snapshot.data?.docs.reversed.toList();
                             return ListView.builder(
-                              reverse: true,
+                              // reverse: true,
                               itemBuilder: (context, index) {
                                 final message = messages![index].data();
                                 return BubbleMessageBuilder(

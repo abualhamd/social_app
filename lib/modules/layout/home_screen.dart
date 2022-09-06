@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:social_app/models/post_model.dart';
 import 'package:social_app/modules/layout/cubit/social_cubit.dart';
+import 'package:social_app/shared/strings.dart';
 import '../../shared/components.dart';
 
 // TODO add cached_internet_image
@@ -13,7 +16,9 @@ class HomeScreen extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     SocialCubit cubit = SocialCubit.get(context);
     return ConditionalBuilder(
-      condition: true, //cubit.posts.isNotEmpty,
+      // TODO add something to display the fallback till data has been fitched
+      condition:
+          true, //cubit.streamPosts !=null, //cubit.posts.isNotEmpty, cubit.posts.isNotEmpty
       builder: (context) => SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
@@ -44,15 +49,20 @@ class HomeScreen extends StatelessWidget {
             SizedBox(
               height: size.width / 30,
             ),
-            ListView.separated(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index) =>
-                    PostBuilder(postModel: cubit.posts[index]),
-                separatorBuilder: (context, index) => SizedBox(
-                      height: size.width / 40,
-                    ),
-                itemCount: cubit.posts.length),
+            StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: cubit.postsStream(),
+                builder: (context, snapshot) {
+                  cubit.getPostsFromStream(snapshot: snapshot);
+                  return ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) =>
+                          PostBuilder(postModel: cubit.posts[index]),
+                      separatorBuilder: (context, index) => SizedBox(
+                            height: size.width / 40,
+                          ),
+                      itemCount: cubit.posts.length);
+                }),
           ],
         ),
       ),

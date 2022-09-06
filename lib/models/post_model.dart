@@ -4,7 +4,8 @@ class PostModel {
   late final String date;
   late final String uId;
   late final String postId;
-  int likes = 0;
+  List<String> likes = [];
+  // int likes = 0;
   String? text;
   String? postImage;
   // tags
